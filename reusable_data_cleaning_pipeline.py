@@ -67,9 +67,14 @@ def clean_transaction_data(input_file, output_file="clean_transactions.csv"):
     # Date Cleaning
     # -------------------------
 
+    df["transaction_date_missing"] = df["transaction_date"].isna()
+
     df["transaction_date"] = pd.to_datetime(
         df["transaction_date"], errors="coerce"
     )
+
+    df["transaction_date"] = df["transaction_date"].fillna(
+        pd.Timestamp("2026-01-01"))
 
     # -------------------------
     # Remove Duplicates

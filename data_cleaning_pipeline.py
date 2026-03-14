@@ -42,9 +42,16 @@ for col in text_columns:
     df[col] = df[col].str.strip().str.lower()
 df["transaction_status"] = df["transaction_status"].fillna("unknown")
 
+# Track missing values
+df["transaction_date_missing"] = df["transaction_date"].isna()
+
 # Converting transaction_date column to datetime format
 df["transaction_date"] = pd.to_datetime(
     df["transaction_date"], errors="coerce")
+
+# Fill invalid dates with placeholder
+df["transaction_date"] = df["transaction_date"].fillna(
+    pd.Timestamp("2026-01-01"))
 
 # Removing duplicates
 df = df.drop_duplicates()
